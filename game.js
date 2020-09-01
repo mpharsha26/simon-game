@@ -1,42 +1,55 @@
-var gameStart = false;
-var levelNo = 1;
-var colors = ['green', 'red', 'yellow', 'blue'];
-var seq = [];
-var userSeq = [];
-var noOfClicks;
+var gameStart = false,
+    levelNo = 1,
+    colors = ['green', 'red', 'yellow', 'blue'],
+    seq = [],
+    userSeq = [],
+    noOfClicks = 0;
 
 $(document).keypress(function(event){
-    $('h1').text('Level ' + levelNo);
-    getSeq(levelNo);
-    var i = 0;
-    noOfClicks = 0;                 
-   
-    displayAndPlaySequence(i)  // displaying the game sequence and playing the respective sounds
+    if (gameStart == false){
+        gameStart = true;
+        $('h1').text('Level ' + levelNo);
+        getSeq(1);
+        //var i = 0;
+        //noOfClicks = 0;                 
     
-    levelNo += 1;
-    
+        displayAndPlaySequence(0)  // displaying the game sequence and playing the respective sounds
+        
+        //levelNo += 1;
+    } 
 });
 
 $('.btn').click(function(){
-    //console.log($(this).attr('id'), colors[seq[seq.length - 1]]);
-    noOfClicks++;
-    var userClickedButton = $(this).attr('id')
-    if (userClickedButton == colors[seq[noOfClicks - 1]]){
-        console.log('working', noOfClicks);
-        $(this).addClass('pressed', 100).removeClass('pressed', 50, function (){
-            makeSound(userClickedButton);
-        });
-        // animateButton($(this));
-    }
-    else {
-        console.log(userClickedButton, noOfClicks);
-        gameOver();
+    if (gameStart == true){
+        noOfClicks++;
+        var userClickedButton = $(this).attr('id')
+        if (userClickedButton == colors[seq[noOfClicks - 1]]){
+            console.log('working', noOfClicks);
+            $(this).addClass('pressed', 100).removeClass('pressed', 50, function (){
+                makeSound(userClickedButton);
+                console.log(seq);
+                if (noOfClicks == seq.length){
+                     var i = 0;
+                     getSeq(levelNo);
+                     displayAndPlaySequence(i)
+                     levelNo += 1;
+                     $('h1').text('Level  ' + levelNo);
+                     noOfClicks = 0;
+                 }
+            });
+            // animateButton($(this));
+        }
+        else {
+            console.log(userClickedButton, noOfClicks);
+            gameOver();
+            restartGame();
+        }
     }
 });
 
 function displayAndPlaySequence(i) {         
     setTimeout(function() {   
-        $("." + colors[seq[i]]).addClass('pressed', 100).removeClass('pressed', 100, function(){
+        $("." + colors[seq[i]]).addClass('pressed', 80).removeClass('pressed', 80, function(){
             makeSound(colors[seq[i]]);
             i++;
             if (i < seq.length)          
@@ -51,11 +64,18 @@ function displayAndPlaySequence(i) {
 //     });
 // }
 
+function restartGame(){
+    levelNo = 1;
+    seq = [];
+    noOfClicks = 0;
+}
+
 function gameOver(){
     var sound = new Audio('sounds/wrong.mp3');
     sound.play();
     $('h1').text('Game over 😩 Press any key to restart');
     $('body').addClass('gameover', 10).removeClass('gameover', 500);
+    gameStart = false;
 }
 
 function getSeq(levelNo){

@@ -7,37 +7,31 @@ var gameStart = false,
 
 $(document).keypress(function(event){
     if (gameStart == false){
-        gameStart = true;
+        gameStart = true; // restricting any keypresses after game starts
         $('h1').text('Level ' + levelNo);
-        getSeq(1);
-        //var i = 0;
-        //noOfClicks = 0;                 
-    
-        displayAndPlaySequence(0)  // displaying the game sequence and playing the respective sounds
-        
-        //levelNo += 1;
+        getSeq(1); // generate the first random sequence
+        displayAndPlaySequence(0)  // animate the generated first color 
     } 
 });
 
+// event listeners to the color buttons
 $('.btn').click(function(){
     if (gameStart == true){
         noOfClicks++;
-        var userClickedButton = $(this).attr('id')
+        var userClickedButton = $(this).attr('id') // color which was clicked by the user
         if (userClickedButton == colors[seq[noOfClicks - 1]]){
-            console.log('working', noOfClicks);
+            //console.log('working', noOfClicks);
             $(this).addClass('pressed', 100).removeClass('pressed', 50, function (){
                 makeSound(userClickedButton);
-                console.log(seq);
-                if (noOfClicks == seq.length){
-                     var i = 0;
-                     getSeq(levelNo);
-                     displayAndPlaySequence(i)
+                // condition to check if user has completed a level successfully
+                if (noOfClicks == seq.length){ 
+                     getSeq(levelNo); // adds a new random color to the end of the sequence
+                     displayAndPlaySequence(0) // animation stuff on the colors in the sequence 
                      levelNo += 1;
                      $('h1').text('Level  ' + levelNo);
                      noOfClicks = 0;
                  }
             });
-            // animateButton($(this));
         }
         else {
             console.log(userClickedButton, noOfClicks);
@@ -47,22 +41,19 @@ $('.btn').click(function(){
     }
 });
 
+//displays the game sequence and plays respective sound
 function displayAndPlaySequence(i) {         
-    setTimeout(function() {   
+    setTimeout(function() {   // used to get a delay between successive colors
         $("." + colors[seq[i]]).addClass('pressed', 80).removeClass('pressed', 80, function(){
             makeSound(colors[seq[i]]);
             i++;
-            if (i < seq.length)          
-            displayAndPlaySequence(i);
+            if (i < seq.length)       
+            // recursion code has to be within the callback to experience the real delay   
+            displayAndPlaySequence(i);  
         });                                              
     }, 300);
 }
 
-// function animateButton(button){
-//     $(button).addClass('pressed', 100).removeClass('pressed', 100, function (){
-//         makeSound(button.attr('id'));
-//     });
-// }
 
 function restartGame(){
     levelNo = 1;
@@ -74,13 +65,13 @@ function gameOver(){
     var sound = new Audio('sounds/wrong.mp3');
     sound.play();
     $('h1').text('Game over 😩 Press any key to restart');
-    $('body').addClass('gameover', 10).removeClass('gameover', 500);
-    gameStart = false;
+    $('body').addClass('game-over', 10).removeClass('game-over', 500);
+    gameStart = false; // activating the keypress listener again by setting this to false
 }
 
 function getSeq(levelNo){
-    var randomNo = Math.floor(Math.random() * 4);
-    seq.push(randomNo);
+    var randomNo = Math.floor(Math.random() * 4); // generate a random color 
+    seq.push(randomNo); 
 }
 
 function makeSound(color){

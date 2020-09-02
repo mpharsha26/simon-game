@@ -64,7 +64,7 @@ function restartGame(){
 function gameOver(){
     var sound = new Audio('sounds/wrong.mp3');
     sound.play();
-    $('h1').text('Game over 😩 Press any key to restart');
+    $('h1').text('Game over 😩 Press any key to restart !!');
     $('body').addClass('game-over', 10).removeClass('game-over', 500);
     gameStart = false; // activating the keypress listener again by setting this to false
 }

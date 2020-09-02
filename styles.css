@@ -1,13 +1,21 @@
 body {
   text-align: center;
-  background-color: #011F3F;
+  /* background-color: #011F3F; */
+  /* background: #003314; */
+  background: #0d3440;
 }
 
 #level-title {
-  font-family: 'Press Start 2P', cursive;
+  /* font-family: 'Press Start 2P', cursive; */
+  font-family: 'Grandstander', cursive;
   font-size: 3rem;
-  margin:  5%;
+  margin:  3%;
   color: #FEF2BF;
+}
+
+.footer {
+  font-family: 'Cormorant Garamond', serif;
+  color: white;
 }
 
 .container {
@@ -22,8 +30,8 @@ body {
   display: inline-block;
   height: 200px;
   width: 200px;
-  border: 10px solid black;
-  border-radius: 20%;
+  border: 5px solid black;
+  border-radius: 50%;
 }
 
 .game-over {
@@ -32,7 +40,7 @@ body {
 }
 
 .red {
-  background-color:red;
+  background-color:#bd0000;
 }
 
 .green {
@@ -40,11 +48,11 @@ body {
 }
 
 .blue {
-  background-color: blue;
+  background-color: #3500b5;
 }
 
 .yellow {
-  background-color: yellow;
+  background-color: #ffcc00;
 }
 
 .pressed {
